@@ -1,5 +1,6 @@
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -113,9 +114,11 @@ export default function LoginScreen() {
           {/* Rodapé - Cadastro */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Não possui conta? </Text>
-            <TouchableOpacity>
-              <Text style={styles.registerText}>Cadastre-se</Text>
-            </TouchableOpacity>
+            <Link href="/cadastro" asChild>
+              <TouchableOpacity>
+                <Text style={styles.registerText}>Cadastre-se</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
 
         </ScrollView>
