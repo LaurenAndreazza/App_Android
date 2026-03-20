@@ -22,19 +22,22 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
+        <ThemedText type="subtitle">👀 Veja a sua Tela de Login!</ThemedText>
+        <Link href="/login">
+          <ThemedText
+            style={{
+              backgroundColor: '#0A5C47',
+              color: 'white',
+              padding: 15,
+              borderRadius: 10,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              marginTop: 10,
+              overflow: 'hidden'
+            }}>
+            Acessar a Nova Tela de Login
+          </ThemedText>
+        </Link>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <Link href="/modal">
