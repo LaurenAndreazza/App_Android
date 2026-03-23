@@ -88,9 +88,11 @@ export default function LoginScreen() {
             </View>
 
             {/* Botão Entrar */}
-            <TouchableOpacity style={styles.loginButton}>
-              <Text style={styles.loginButtonText}>Entrar</Text>
-            </TouchableOpacity>
+            <Link href="/(tabs)" asChild>
+              <TouchableOpacity style={styles.loginButton}>
+                <Text style={styles.loginButtonText}>Entrar</Text>
+              </TouchableOpacity>
+            </Link>
 
             {/* Or Divider */}
             <View style={styles.dividerContainer}>
