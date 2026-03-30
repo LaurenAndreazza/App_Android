@@ -79,11 +79,11 @@ export default function LoginScreen() {
                   size={20}
                   color={rememberMe ? "#0A5C47" : "#9CA3AF"}
                 />
-                <Text style={styles.rememberText}>Remember me</Text>
+                <Text style={styles.rememberText}>Lembrar de mim</Text>
               </TouchableOpacity>
 
               <TouchableOpacity>
-                <Text style={styles.forgotText}>Forgot Password ?</Text>
+                <Text style={styles.forgotText}>Esqueci minha senha ?</Text>
               </TouchableOpacity>
             </View>
 
@@ -97,7 +97,7 @@ export default function LoginScreen() {
             {/* Or Divider */}
             <View style={styles.dividerContainer}>
               <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>Or</Text>
+              <Text style={styles.dividerText}>Ou</Text>
               <View style={styles.dividerLine} />
             </View>
 
