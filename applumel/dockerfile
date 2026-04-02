@@ -1,0 +1,21 @@
+# Usa uma imagem oficial do Node (use a versão compatível com seu projeto)
+FROM node:18-alpine
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia os arquivos de dependências primeiro (para otimizar o cache do Docker)
+COPY package.json package-lock.json* yarn.lock* ./
+
+# Instala as dependências
+RUN npm install
+
+# Copia o restante do código do projeto
+COPY . .
+
+# Expõe a porta padrão do Expo (Metro Bundler)
+EXPOSE 8081
+
+# Comando para iniciar o Expo
+# O parâmetro --localhost ou variáveis de ambiente serão passados pelo compose
+CMD ["npx", "expo", "start"]

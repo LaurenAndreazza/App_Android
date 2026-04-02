@@ -1,10 +1,23 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+const CustomTabIcon = ({ focused, iconName, label }: { focused: boolean, iconName: any, label: string }) => {
+  return (
+    <View style={[styles.tabContainer, focused && styles.tabContainerFocused]}>
+      <Ionicons
+        name={focused ? iconName.active : iconName.inactive}
+        size={24}
+        color={focused ? 'white' : '#9CA3AF'}
+      />
+      <Text style={[styles.tabLabel, focused && styles.tabLabelFocused]}>
+        {label}
+      </Text>
+    </View>
+  );
+};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,31 +25,109 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          backgroundColor: 'white',
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          height: 100, // Make height large enough to accommodate the 72px tall badges
+          borderTopWidth: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.05,
+          shadowRadius: 10,
+          paddingTop: 10,
+        },
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+
       <Tabs.Screen
         name="produtos"
         options={{
           title: 'Rolês',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon
+              focused={focused}
+              iconName={{ active: 'home', inactive: 'home-outline' }}
+              label="Rolês"
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: 'Reservas',
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon
+              focused={focused}
+              iconName={{ active: 'receipt', inactive: 'receipt-outline' }}
+              label="Reservas"
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Loja',
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon
+              focused={focused}
+              iconName={{ active: 'bookmark', inactive: 'bookmark-outline' }}
+              label="Loja"
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="perfil"
+        options={{
+          title: 'Eu',
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon
+              focused={focused}
+              iconName={{ active: 'person', inactive: 'person-outline' }}
+              label="Eu"
+            />
+          ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60,
+    width: 60,
+  },
+  tabContainerFocused: {
+    backgroundColor: '#0A5C47',
+    borderRadius: 24,
+    height: 72,
+    width: 76,
+    marginTop: -8, // Traz a pílula verde ligeiramente para cima
+  },
+  tabLabel: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  tabLabelFocused: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+  }
+});

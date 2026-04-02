@@ -1,219 +1,456 @@
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Image,
+  ImageBackground,
+  Platform,
   SafeAreaView,
+  ScrollView,
   StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
-const FILTERS = ['Todos', 'Bares', 'Trilhas', 'Shows', 'Cultura'];
-const EVENTS = [
+const CATEGORIES = [
+  { id: '1', name: 'RESTAURANTES', icon: 'glass-cocktail', family: 'MaterialCommunityIcons', selected: true },
+  { id: '2', name: 'ESPORTES', icon: 'basketball-outline', family: 'Ionicons', selected: false },
+  { id: '3', name: 'SHOWS', icon: 'drama-masks', family: 'MaterialCommunityIcons', selected: false },
+  { id: '4', name: 'HOBBIES', icon: 'color-palette-outline', family: 'Ionicons', selected: false },
+];
+
+const PARTNERS = [
   {
     id: '1',
-    title: 'Bar Quarto Distrito + Trivia',
-    info: 'Hoje, 19h • A partir de R$ 20',
-    premium: true,
-    image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=400&h=200',
+    name: 'Agridoce Café',
+    category: 'Cafeteria',
+    rating: '4.8',
+    distance: '1.0 km',
+    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=300&h=300'
   },
   {
     id: '2',
-    title: 'Trilha no Morro da Apamecor',
-    info: 'Sábado, 08h • Grátis',
-    premium: false,
-    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&q=80&w=400&h=200',
-  },
-  {
-    id: '3',
-    title: 'Samba do Beco',
-    info: 'Sexta, 21h • R$ 15',
-    premium: false,
-    image: 'https://images.unsplash.com/photo-1533174000273-fa23bc115b74?auto=format&fit=crop&q=80&w=400&h=200',
-  },
+    name: 'Kampeki',
+    category: 'Sushi Lounge Bar',
+    rating: '4.9',
+    distance: '2.5 km',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&q=80&w=300&h=300'
+  }
 ];
 
 export default function ProdutosScreen() {
-  const [activeFilter, setActiveFilter] = useState('Todos');
+  const [activeCategory, setActiveCategory] = useState('1');
+
+  const renderIcon = (family: string, name: any, size: number, color: string) => {
+    if (family === 'MaterialCommunityIcons') {
+      return <MaterialCommunityIcons name={name} size={size} color={color} />;
+    }
+    return <Ionicons name={name} size={size} color={color} />;
+  };
 
   return (
-    <SafeAreaView style={styles.homePage}>
-      <StatusBar barStyle="light-content" backgroundColor="#2C3E35" />
+    <SafeAreaView style={styles.container}>
+      {Platform.OS === 'android' && <StatusBar barStyle="dark-content" backgroundColor="#EDF1F3" />}
 
-      {/* Cabeçalho do App */}
-      <View style={styles.lumelHeader}>
-        <Text style={styles.headerTitle}>LUMEL APP</Text>
-        <Text style={styles.headerSubtitle}>Eventos e Rolês em POA</Text>
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-      {/* Área de Filtros */}
-      <View style={styles.filtersWrapper}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.profileSection}>
+            <Image
+              source={{ uri: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150' }}
+              style={styles.avatar}
+            />
+            <View style={styles.greetingContainer}>
+              <Text style={styles.greetingText}>BEM-VINDO DE VOLTA</Text>
+              <Text style={styles.userName}>Taylor Cassimiro</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.bellButton}>
+            <Ionicons name="notifications-outline" size={20} color="#0A5C47" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Location */}
+        <View style={styles.locationContainer}>
+          <Ionicons name="location-sharp" size={20} color="#0A5C47" />
+          <Text style={styles.locationText}>Niterói, Canoas</Text>
+          <Ionicons name="chevron-down" size={16} color="#0A5C47" style={styles.chevronIcon} />
+        </View>
+
+        {/* Search */}
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color="#9CA3AF" />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="pesquise diversos tipos de rolês"
+            placeholderTextColor="#9CA3AF"
+          />
+          <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="options" size={20} color="#0A5C47" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Promo Card */}
+        <View style={styles.promoWrapper}>
+          <ImageBackground
+            source={{ uri: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&q=80&w=600&h=300' }}
+            style={styles.promoCard}
+            imageStyle={{ borderRadius: 24 }}
+          >
+            <View style={styles.promoOverlay}>
+              <View style={styles.promoBadge}>
+                <Text style={styles.promoBadgeText}>OFERTA LIMITADA</Text>
+              </View>
+              <Text style={styles.promoTitle}>30% de desconto {"\n"}????</Text>
+              <TouchableOpacity style={styles.promoButton}>
+                <Text style={styles.promoButtonText}>Reserve{"\n"}agora</Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+        </View>
+
+        {/* Categories Header */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Categorias</Text>
+          <TouchableOpacity>
+            <Text style={styles.vejaMais}>VEJA MAIS</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Categories List */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filtersSection}
+          contentContainerStyle={styles.categoriesScroll}
         >
-          {FILTERS.map((filter) => (
-            <TouchableOpacity
-              key={filter}
-              style={[
-                styles.filterChip,
-                activeFilter === filter && styles.filterChipActive,
-              ]}
-              onPress={() => setActiveFilter(filter)}
-            >
-              <Text
-                style={[
-                  styles.filterChipText,
-                  activeFilter === filter && styles.filterChipTextActive,
-                ]}
+          {CATEGORIES.map((cat) => {
+            const isSelected = activeCategory === cat.id;
+            return (
+              <TouchableOpacity
+                key={cat.id}
+                style={styles.categoryItem}
+                onPress={() => setActiveCategory(cat.id)}
+                activeOpacity={0.7}
               >
-                {filter}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* Container de Eventos */}
-      <ScrollView contentContainerStyle={styles.eventsFeed} showsVerticalScrollIndicator={false}>
-        {EVENTS.map((event) => (
-          <View key={event.id} style={styles.eventCard}>
-            <Image source={{ uri: event.image }} style={styles.eventImage} />
-            <Text style={styles.eventTitle}>{event.title}</Text>
-
-            <View style={styles.eventInfoContainer}>
-              <Text style={styles.eventInfo}>{event.info}</Text>
-              {event.premium && (
-                <View style={styles.premiumBadgeWrapper}>
-                  <Text style={styles.premiumBadge}> Premium </Text>
+                <View style={[styles.categoryIconContainer, isSelected && styles.categoryIconSelected]}>
+                  {renderIcon(cat.family, cat.icon, 28, isSelected ? 'white' : '#9CA3AF')}
                 </View>
-              )}
-            </View>
+                <Text style={[styles.categoryText, isSelected && styles.categoryTextSelected]}>
+                  {cat.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
 
-            <TouchableOpacity style={styles.btnJoinGroup} activeOpacity={0.8}>
-              <Text style={styles.btnJoinGroupText}>Entrar no Grupo</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+        {/* Partners Header */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Parceiros</Text>
+          <TouchableOpacity>
+            <Text style={styles.vejaMais}>VER MAPA</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Partners List */}
+        <View style={styles.partnersContainer}>
+          {PARTNERS.map(partner => (
+            <View key={partner.id} style={styles.partnerCard}>
+              <Image source={{ uri: partner.image }} style={styles.partnerImage} />
+              <View style={styles.partnerInfo}>
+                <View style={styles.partnerTitleRow}>
+                  <Text style={styles.partnerTitle}>{partner.name}</Text>
+                  <TouchableOpacity>
+                    <Feather name="bookmark" size={20} color="#9CA3AF" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.partnerCategory}>{partner.category}</Text>
+
+                <View style={styles.partnerStats}>
+                  <View style={styles.statItem}>
+                    <Ionicons name="star" size={14} color="#0A5C47" />
+                    <Text style={styles.statTextBold}>{partner.rating}</Text>
+                  </View>
+                  <View style={styles.statItem}>
+                    <Ionicons name="location-outline" size={14} color="#9CA3AF" />
+                    <Text style={styles.statText}>{partner.distance}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  homePage: {
+  container: {
     flex: 1,
-    backgroundColor: '#FDFDFD',
+    backgroundColor: '#EDF1F3',
   },
-  lumelHeader: {
-    backgroundColor: '#2C3E35',
-    paddingHorizontal: 20,
-    paddingTop: 50, // Added padding for top area
-    paddingBottom: 24,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+  scrollContent: {
+    paddingBottom: 120, // Space for standard bottom tabs
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    marginTop: Platform.OS === 'android' ? 24 : 12,
   },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#E0E0E0',
-    marginTop: 4,
-  },
-  filtersWrapper: {
-    height: 70, // Fixed height so ScrollView doesn't collapse
-  },
-  filtersSection: {
-    padding: 20,
+  profileSection: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  filterChip: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#EEEEEE',
-    borderRadius: 20,
-    marginRight: 12, // Gap between chips
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
   },
-  filterChipActive: {
-    backgroundColor: '#82C07B',
+  greetingContainer: {
+    marginLeft: 12,
   },
-  filterChipText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#666666',
+  greetingText: {
+    fontSize: 10,
+    color: '#6B7280',
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
-  filterChipTextActive: {
-    color: '#2C3E35',
+  userName: {
+    fontSize: 18,
+    color: '#0A5C47',
+    fontWeight: 'bold',
+    marginTop: 2,
   },
-  eventsFeed: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
-  },
-  eventCard: {
+  bellButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: 'white',
-    borderRadius: 16,
-    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
-    borderColor: '#F0F0F0',
-    borderWidth: 1,
-    marginBottom: 16,
   },
-  eventImage: {
-    width: '100%',
-    height: 140,
-    backgroundColor: '#2C3E35',
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  eventTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 4,
-  },
-  eventInfoContainer: {
+  locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    paddingHorizontal: 24,
+    marginTop: 24,
   },
-  eventInfo: {
-    fontSize: 14,
-    color: '#666666',
-    marginRight: 8, // Gap between info and badge
-  },
-  premiumBadgeWrapper: {
-    backgroundColor: '#F4C754',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  premiumBadge: {
-    color: '#333333',
-    fontSize: 10,
+  locationText: {
+    fontSize: 16,
+    color: '#0A5C47',
     fontWeight: 'bold',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    textTransform: 'uppercase',
+    marginLeft: 6,
   },
-  btnJoinGroup: {
-    width: '100%',
-    backgroundColor: '#82C07B',
-    paddingVertical: 14,
+  chevronIcon: {
+    marginLeft: 4,
+    marginTop: 2,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginHorizontal: 24,
+    marginTop: 16,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 12,
+    fontSize: 14,
+    color: '#111827',
+  },
+  filterButton: {
+    width: 36,
+    height: 36,
+    backgroundColor: '#EDF1F3',
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  btnJoinGroupText: {
-    color: '#2C3E35',
-    fontSize: 16,
+  promoWrapper: {
+    marginHorizontal: 24,
+    marginTop: 24,
+    borderRadius: 24,
+    shadowColor: '#0A5C47',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  promoCard: {
+    width: '100%',
+    height: 180,
+  },
+  promoOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(10, 92, 71, 0.75)',
+    borderRadius: 24,
+    padding: 24,
+    justifyContent: 'center',
+  },
+  promoBadge: {
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  promoBadgeText: {
+    color: 'white',
+    fontSize: 10,
     fontWeight: 'bold',
+  },
+  promoTitle: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  promoButton: {
+    backgroundColor: '#0A5C47',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 16,
+  },
+  promoButtonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 24,
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0A5C47',
+  },
+  vejaMais: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#62A888',
+    letterSpacing: 0.5,
+  },
+  categoriesScroll: {
+    paddingLeft: 24,
+    paddingRight: 8,
+  },
+  categoryItem: {
+    alignItems: 'center',
+    marginRight: 24,
+  },
+  categoryIconContainer: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  categoryIconSelected: {
+    backgroundColor: '#0A5C47',
+  },
+  categoryText: {
+    fontSize: 10,
+    color: '#9CA3AF',
+    fontWeight: 'bold',
+    marginTop: 12,
+    letterSpacing: 0.5,
+  },
+  categoryTextSelected: {
+    color: '#0A5C47',
+  },
+  partnersContainer: {
+    paddingHorizontal: 24,
+  },
+  partnerCard: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 24,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
+    alignItems: 'center',
+  },
+  partnerImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 16,
+    backgroundColor: '#EDF1F3',
+  },
+  partnerInfo: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  partnerTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  partnerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0A5C47',
+  },
+  partnerCategory: {
+    fontSize: 13,
+    color: '#9CA3AF',
+    marginTop: 4,
+  },
+  partnerStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  statTextBold: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginLeft: 4,
+  },
+  statText: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginLeft: 4,
   },
 });

@@ -82,9 +82,11 @@ export default function LoginScreen() {
                 <Text style={styles.rememberText}>Lembrar de mim</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity>
-                <Text style={styles.forgotText}>Esqueci minha senha ?</Text>
-              </TouchableOpacity>
+              <Link href="/esqueci-senha" asChild>
+                <TouchableOpacity>
+                  <Text style={styles.forgotText}>Esqueci minha senha ?</Text>
+                </TouchableOpacity>
+              </Link>
             </View>
 
             {/* Botão Entrar */}
